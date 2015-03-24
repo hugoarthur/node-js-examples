@@ -14,10 +14,11 @@ var bodyParser = require('body-parser');
 var multer = require('multer');
 //database
 var mongoose = require('mongoose'); 
-
 //mongodb - mongodb://{database-url}/{database-name}
 mongoose.connect('mongodb://localhost/mongodb');
-mongoose.model('users', {name: String, age: String});
+
+//project files
+require('./models/users.js');
 
 //configure express to use some modules
 app.use(bodyParser.json()); // for parsing application/json
@@ -39,5 +40,10 @@ app.get('/users', function(req, res) {
 //POST
 app.post('/save', function(req, res) {
 	var user = req.body;
+	var t = new User(user);
+	t.save(function (err) {
+	if (err) // ...
+		console.log('erro');
+	});
  	res.json(user);
 });
